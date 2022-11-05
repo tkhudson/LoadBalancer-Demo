@@ -164,6 +164,34 @@ resource "azurerm_network_interface" "lbdemo-nic-2" {
   }
 }
 
+resource "azurerm_windows_virtual_machine" "sbn2-vm" {
+  name                = "sbn2-vm"
+  resource_group_name = local.azrg
+  location            = local.location
+  size                = "Standard_B1s"
+  admin_username      = "adminuser"
+  admin_password      = "demopass2!"
+  network_interface_ids = [
+    azurerm_network_interface.lbdemo-nic-2.id
+  ]
+
+  os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+  }
+
+  source_image_reference {
+    publisher = "MicrosoftWindowsServer"
+    offer     = "WindowsServer"
+    sku       = "2016-Datacenter"
+    version   = "latest"
+  }
+
+  tags = {
+    "environment" = "sub2"
+  }
+}
+
 resource "azurerm_subnet" "lbdemo-sbn-3" {
   name                 = "lbdemo-sbn-3"
   resource_group_name  = local.azrg
@@ -185,6 +213,34 @@ resource "azurerm_network_interface" "lbdemo-nic-3" {
 
   tags = {
     environment = "sub3"
+  }
+}
+
+resource "azurerm_windows_virtual_machine" "sbn3-vm" {
+  name                = "sbn3-vm"
+  resource_group_name = local.azrg
+  location            = local.location
+  size                = "Standard_B1s"
+  admin_username      = "adminuser"
+  admin_password      = "demopass3!"
+  network_interface_ids = [
+    azurerm_network_interface.lbdemo-nic-3.id
+  ]
+
+  os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+  }
+
+  source_image_reference {
+    publisher = "MicrosoftWindowsDesktop"
+    offer     = "Windows-10"
+    sku       = "20h1-pro"
+    version   = "latest"
+  }
+
+  tags = {
+    "environment" = "sub3"
   }
 }
 
